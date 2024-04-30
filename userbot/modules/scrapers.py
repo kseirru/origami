@@ -11,7 +11,6 @@ from shutil import rmtree
 from urllib.parse import quote_plus
 
 import asyncurban
-from emoji import get_emoji_regexp
 from google_images_download import google_images_download
 from googletrans import LANGUAGES, Translator
 from gtts import gTTS, gTTSError
@@ -245,7 +244,7 @@ async def translateme(trans):
         return
 
     try:
-        reply_text = translator.translate(deEmojify(message), dest=LANG)
+        reply_text = translator.translate(message, dest=LANG)
     except ValueError:
         await trans.edit("Invalid destination language.")
         return
@@ -274,11 +273,6 @@ async def lang(value):
         await value.client.send_message(
             BOTLOG_CHATID, "Default language changed to **" + LANG + "**"
         )
-
-
-def deEmojify(inputString):
-    """Remove emojis and other non-safe characters from string"""
-    return get_emoji_regexp().sub("", inputString)
 
 
 @register(outgoing=True, pattern=r"^.wolfram (.*)")
